@@ -232,6 +232,9 @@ dependencies {
 
         this.extra.set("isDebug", isDebug)
     })
+
+    implementation(libs.nextlib.media3ext) // To add media3 software decoders and extensions
+    implementation(libs.nextlib.mediainfo) // To get media info through ffmpeg
 }
 
 tasks.register<Jar>("androidSourcesJar") {

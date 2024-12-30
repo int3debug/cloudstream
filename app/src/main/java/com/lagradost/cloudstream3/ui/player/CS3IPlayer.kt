@@ -83,6 +83,7 @@ import com.lagradost.cloudstream3.utils.SubtitleHelper.fromTwoLettersToLanguage
 import com.lagradost.fetchbutton.aria2c.Aria2Starter
 import com.lagradost.fetchbutton.aria2c.DownloadListener
 import com.lagradost.fetchbutton.aria2c.DownloadStatusTell
+import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.NextRenderersFactory
 import kotlinx.coroutines.delay
 import java.io.File
 import java.util.UUID
@@ -726,11 +727,12 @@ class CS3IPlayer : IPlayer {
             val exoPlayerBuilder =
                 ExoPlayer.Builder(context)
                     .setRenderersFactory { eventHandler, videoRendererEventListener, audioRendererEventListener, textRendererOutput, metadataRendererOutput ->
-                        DefaultRenderersFactory(context).apply {
-                            setEnableDecoderFallback(true)
-                            // Enable Ffmpeg extension.
-                            setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
-                        }.createRenderers(
+                        // Use NextRenderersFactory instead of DefaultRenderersFactory
+                        val nextRenderersFactory = NextRenderersFactory(context).apply {
+                            // Enable additional configuration if needed
+                        }
+
+                        nextRenderersFactory.createRenderers(
                             eventHandler,
                             videoRendererEventListener,
                             audioRendererEventListener,
